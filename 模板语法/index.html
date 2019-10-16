@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <span v-once>这个将不会改变:{{ msg }}</span>
+        <p>Using mustaches: {{ rawHtml }}</p>
+        <span v-html="rawHtml"></span>
+        <button v-bind:disabled="isButtonDisabled">Button</button>
+        <a v-bind:href="url">动态参数失败</a>
+        <a :href="url" @click="doSomething">指令缩写</a>
+        <h2>计算属性</h2>
+        <p>Original message: {{ message }}</p>
+        <p>Original reversed message: {{ reversedMessage }}</p>
+        <p>计算属性对于侦听属性(watch)优势：{{ fullName }}</p>
+    </div>
+    <script>
+        var data = {
+            msg : 1,
+            rawHtml: '<h1>v-html</h1>',
+            isButtonDisabled: false,
+            attributeName: 'href',
+            url: 'vue',
+            eventName: focus,
+        }
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg : 1,
+                rawHtml: '<h1>v-html</h1>',
+                isButtonDisabled: false,
+                attributeName: 'href',
+                url: 'vue',
+                message: 'hello!',
+                firstName: 'yang',
+                lastName: 'lei',
+            },
+            methods: {
+                doSomething: function() {
+
+                }
+            },
+            // 计算属性是基于它们的响应式依赖进行缓存的
+            computed: {
+                reversedMessage: function() {
+                    return this.message.split('').reverse().join('')
+                },
+                fullName:{
+                    get: function() {
+                        return this.firstName + ' ' + this.lastName
+                    },
+                    set: function(newValue) {
+                        var names = newValue.split(' ');
+                        this.firstName = names[0] + '111';
+                        this.lastName = names[names.length -1];
+                    }
+                } 
+            }
+        })
+    </script>
+</body>
+</html>
