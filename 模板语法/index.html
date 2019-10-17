@@ -6,6 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+    .active{
+      background: red;
+    }
+    .static{
+      text-align: center;
+    }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -20,7 +28,97 @@
         <p>Original reversed message: {{ reversedMessage }}</p>
         <p>计算属性对于侦听属性(watch)优势：{{ fullName }}</p>
     </div>
+    <h2>侦听器</h2>
+    <div id="watch-example">
+      <p>
+        Ask a yes/no question:
+        <input v-model="question">
+        <img :src="imgUrl" alt="">
+      </p>
+      <p>{{ answer }}</p>
+    </div>
+    <h2>绑定html class</h2>
+    <div id="app2">
+      <div class="static" v-bind:class="{ active: isActive }">aaa</div>
+      <div v-bind:class="classObject">bbb</div>
+      <div v-bind:class="[activeClass, errorClass]">ccc</div>
+      <div v-bind:class="[isActive ? activeClass : '', errorClass]">ddd</div>
+      <my-component class="baz boo"></my-component>
+      <my-component v-bind:class="{active: isActive}"></my-component>
+      <div v-bind:style="{ color: activeColor, fontSize: fontSize +'px'}">内联样式</div>
+      <div v-bind:style="styleObject">内联样式</div>
+      <div v-bind:style="[baseStyles, styleObject]">内联样式-多个对象</div>
+      <div :style="{display: ['-webkit-box', '-ms-flexbox', 'flex']}">前缀</div>
+    </div>
+
+    <h2>条件渲染</h2>
+    <div id="app3">
+      <p v-if="awesome">Vue is awesome</p>
+      <p v-else>Oh no!</p>
+
+      <template v-if="ok">
+        <h1>Title</h1>
+        <p>Paragraph 1</p>
+        <p>Paragraph 2</p>
+      </template>
+
+      <div v-if="Math.random() > 0.5">
+        Now you see me
+      </div>
+      <div v-else>
+        Now you don`t
+      </div>
+
+      <div v-if="type === 'A'">A</div>
+      <div v-else-if="type === 'B'">B</div>
+      <div v-else-if="type === 'C'">C</div>
+      <div v-else>Not A/B/C</div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
     <script>
+      var watchExampleVM = new Vue({
+        el: '#watch-example',
+        data: {
+          question: '',
+          answer: 'I cannot give you an answer until you ask a question!',
+          imgUrl:''
+        },
+        watch: {
+          question: function(newQuestion, oldQuestion) {
+            this.answer = 'Waiting for you to stop typing...'
+            this.debouncedGetAnswer()
+          }
+        },
+        created: function() {
+          this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+        },
+        methods: {
+          getAnswer: function() {
+            if(this.question.indexOf('?') === -1){
+              this.answer = 'Questions usually contain a question mark. ;-)'
+              return
+            }
+            this.answer = 'Thinking...'
+            var vm = this
+            axios.get('https://yesno.wtf/api')
+              .then(function(response){
+                vm.answer = _.capitalize(response.data.answer)
+                vm.imgUrl = response.data.image
+              })
+              .catch(function(error){
+                vm.answer = 'Error! Could not reach the API. ' + error 
+              })
+          }
+        }
+      })
+    </script>
+    <script>
+        Vue.component('my-component', {
+          template: '<p class="foo bar">组件上用class绑定</p>'
+        })
         var data = {
             msg : 1,
             rawHtml: '<h1>v-html</h1>',
@@ -57,11 +155,44 @@
                     },
                     set: function(newValue) {
                         var names = newValue.split(' ');
-                        this.firstName = names[0] + '111';
+                        this.firstName = names[0] + '新增内容';
                         this.lastName = names[names.length -1];
                     }
                 } 
             }
+        })
+        var vm2 = new Vue({
+          el: '#app2',
+          data: {
+            isActive: true,
+            activeClass: 'active',
+            errorClass: 'text-danger',
+            activeColor: 'green',
+            fontSize: 30,
+            styleObject: {
+              color: 'red',
+              fontSize: '13px'
+            },
+            baseStyles: {
+              border: '1px solid red'
+            }
+          },
+          computed: {
+            classObject: function() {
+              return {
+                active: this.isActive,
+                static: this.isActive,
+              }
+            }
+          }
+        })
+        var vm3 = new Vue({
+          el: "#app3",
+          data: {
+            awesome: true,
+            ok: true,
+            type: 'A',
+          }
         })
     </script>
 </body>
