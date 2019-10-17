@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="example-1">
+        <button @click="counter += 1">Add 1</button>
+        <p>The button above has been clicked {{ counter }} times.</p>
+    </div>
+    <div id="example-2">
+        <button @click="greet">Greet</button>
+    </div>
+    <div id="example-3">
+        <button @click="say('hi')">Say hi</button>
+        <button @click="say('what')">Say what</button>
+        <button @click="warn('Form cannot !!', $event)">Submit</button>
+        <a @click.once="doThis">once</a>
+        <input @keyup.page-down="onPageDown" placeholder="keyup.page-down">
+        <input @keyup.alt.67="clear" placeholder="Alt+C">
+        <h2>.exact修饰符</h2>
+        <button @click.ctrl="onClick">A</button>
+        <button @click.ctrl.exact="onCtrlClick">A</button>
+        <button @click.exact="onClick">A</button>
+        <button @click.left="onClick">left</button>
+        <button @click.right="onClick">right</button>
+        <button @click.middle="onClick">middle</button>
+    </div>
+    <script>
+        var example1 = new Vue({
+            el: '#example-1',
+            data: {
+                counter: 0
+            }
+        })
+
+        var example2 = new Vue({
+            el: '#example-2',
+            data: {
+                name: 'Vue.js'
+            },
+            methods:{
+                greet: function(event){
+                    alert('Hello' + this.name + '!')
+                    if(event){
+                        alert(event.target.tagName)
+                    }
+                }
+            } 
+        })
+
+        new Vue({
+            el: '#example-3',
+            methods: {
+                say: function(message, event) {
+                    if(event) event.preventDefault()
+                    alert(message)
+                },
+                warn: function(message, event) {
+                    if(event) event.preventDefault()
+                    alert(message)
+                },
+                doThis: function() {
+                    alert('doThis')
+                },
+                onPageDown: function() {
+                    alert('onPageDown')
+                },
+                clear: function() {
+                    alert('clear')
+                }
+            }
+        })
+    </script>
+</body>
+</html>
