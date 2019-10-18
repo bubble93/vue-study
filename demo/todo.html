@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todo demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <label for="caidan">菜单</label>
+        <input type="text" v-model:value="items.message" >
+        <button @click="addItem">增加</button>
+        <item-list
+            v-bind:items="items"
+            v-on:deleteItem="deleteItem"
+        ></item-list>
+    </div>
+
+    <script>
+        Vue.component('item-list',{
+            props: {
+                items:Object
+            },
+            template: `
+                <ul>
+                    <li 
+                        v-for="(item, index) in items.list"
+                        @click="deleteItem()"
+                    >{{item}}</li>
+                </ul>
+            `
+        })
+        var app = new Vue({
+            el: '#app',
+            data: {
+                items: {
+                    list: [
+                        '红烧肉',
+                        '青椒肉丝',
+                        '西红柿炒鸡蛋',
+                    ],
+                    message: ''
+                }
+            },
+            methods: {
+                addItem: function() {
+                    this.items.list.push(this.items.message)
+                    this.items.message=""
+                },
+                deleteItem: function(index) {
+                    this.items.list.splice(index, 1)
+                }
+            }
+        })
+    </script>
+</body>
+</html>
