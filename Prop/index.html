@@ -9,14 +9,20 @@
 </head>
 <body>
     <div id="app">
-        <blog-post post-title="hello!" :add-bottom="object" :title="post.name + ' by ' + post.title" :num="1" size="ASDF" :prop-e="1" ></blog-post>
+        <blog-post ccc="attrs" class="aaa" post-title="hello!" :add-bottom="object" :title="post.name + ' by ' + post.title" :num="1" size="ASDF" :prop-e="1" ></blog-post>
+        <data-input type="text"></data-input>
     </div>
     <script>
         function Person(firstName, lastName) {
             this.firstName = firstName;
             this.lastName = lastName;
         }
+        Vue.component('data-input', {
+            inheritAttrs: false,
+            template:`<input type="data" class="from-control" >`
+        })
         Vue.component('blog-post' , {
+            inheritAttrs: false,
             props: {
               postTitle: String, 
               addBottom: String,
@@ -46,6 +52,7 @@
                 <p>{{ normalizdeSize }}</p>
                 <p>{{ propType }}</p>
                 <p>{{ propE }}</p>
+                <p>{{ $attrs }}</p>
               </div>
             `,
             data() {
