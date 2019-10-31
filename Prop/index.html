@@ -9,9 +9,13 @@
 </head>
 <body>
     <div id="app">
-        <blog-post post-title="hello!" :add-bottom="object" :title="post.name + ' by ' + post.title" :num="1" size="ASDF" :prop-type="propType"></blog-post>
+        <blog-post post-title="hello!" :add-bottom="object" :title="post.name + ' by ' + post.title" :num="1" size="ASDF" :prop-e="1" ></blog-post>
     </div>
     <script>
+        function Person(firstName, lastName) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+        }
         Vue.component('blog-post' , {
             props: {
               postTitle: String, 
@@ -20,8 +24,17 @@
               num: Number,
               size: String,
               propType: {
-                a: Number,
-                b: [String, Number]
+                type: Person,
+                default: function() {
+                    return new Person('a','b');
+                },
+              },
+              propE: {
+                  type: Number,
+                  required: true,
+                  validator: function (value) {
+                      return value == 1;
+                  }
               }
             },
             template: `
@@ -31,8 +44,8 @@
                 <p>{{ myNum }}</p>
                 <button @click="add">add</button>
                 <p>{{ normalizdeSize }}</p>
-                <p>{{ propType.a }}</p>
-                <p>{{ propType.b }}</p>
+                <p>{{ propType }}</p>
+                <p>{{ propE }}</p>
               </div>
             `,
             data() {
@@ -53,6 +66,7 @@
               }
             },
         })
+
         new Vue({
             el: '#app',
             data: {
