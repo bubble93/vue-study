@@ -9,17 +9,62 @@
 </head>
 <body>
     <div id="app">
-        <blog-post post-title="hello!"></blog-post>
+        <blog-post post-title="hello!" :add-bottom="object" :title="post.name + ' by ' + post.title" :num="1" size="ASDF" :prop-type="propType"></blog-post>
     </div>
     <script>
         Vue.component('blog-post' , {
-            props: ['postTitle'],
-            template: '<h3>{{ postTitle }}</h3>'
+            props: {
+              postTitle: String, 
+              addBottom: String,
+              title: String,
+              num: Number,
+              size: String,
+              propType: {
+                a: Number,
+                b: [String, Number]
+              }
+            },
+            template: `
+              <div>
+                <h3>{{ postTitle }}{{ addBottom }}</h3>
+                <h2>{{ title }}</h2>
+                <p>{{ myNum }}</p>
+                <button @click="add">add</button>
+                <p>{{ normalizdeSize }}</p>
+                <p>{{ propType.a }}</p>
+                <p>{{ propType.b }}</p>
+              </div>
+            `,
+            data() {
+              return {
+                myNum: this.num,
+              }
+            },
+            methods: {
+              add() {
+                console.log(1111);
+                
+                this.myNum += 1;
+              }
+            },
+            computed: {
+              normalizdeSize() {
+                return this.size.toLowerCase();
+              }
+            },
         })
         new Vue({
             el: '#app',
             data: {
-
+              object: 'true',
+              post: {
+                title: 'title',
+                name: 'name',
+              },
+              propType: {
+                a: true,
+                b: [],
+              },
             }
         })
     </script>
