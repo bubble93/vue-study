@@ -27,6 +27,11 @@
                 <p>footer</p>
             </template>
         </base-layout>
+        <current-user>
+            <template v-slot:default="slotProps">
+                {{ slotProps.user.firstName }}
+            </template>
+        </current-user>
     </div>
     <script>
 
@@ -61,6 +66,21 @@
                 </footer>
             </div>
             `
+        })
+        Vue.component('current-user', {
+            template: `
+                <span>
+                    <solt v-bind:user="user">{{ user.lastName }}</solt>
+                </span>
+            `,
+            data() {
+                return {
+                    user: {
+                        lastName: 'lei',
+                        firstName: 'yang',
+                    },
+                };
+            },
         })
         new Vue({
             el: '#app',
