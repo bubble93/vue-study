@@ -8,16 +8,42 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="app">
-
+    <div id="app">
+        <p>父组件: {{ test }}</p>
+        <test :test.sync="test"></test>
     </div>
     <script>
-        new Vue({
-            el: '.app',
-            data: {
 
+        Vue.component('test', {
+            data() {
+                return {
+
+                }
+            },
+            props: {
+                test:String
+            },
+            methods: {
+                change() {
+                    console.log(1111);
+                    var newTitle = '1111111';
+                    this.$emit('update:title', newTitle)
+                }
+            },
+            template:`
+                <div>
+                    <p>子组件: {{ test }}</p>
+                    <button @click="change">add</button>
+                </div>
+            `,
+        })
+        new Vue({
+            el: '#app',
+            data: {
+                test: '222',
             },
         })
+
     </script>
 </body>
 </html>
