@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <navigation-link>
+            <button>这是插槽中的内容</button>
+        </navigation-link>
+        <navigation-link>
+            <button>插槽被填充内容</button>
+        </navigation-link>
+        <base-layout>
+            <template v-slot:header>
+                <h1>header</h1>
+            </template>
+
+            <p>default content1</p>
+            <p>default content2</p>
+
+            <template v-slot:footer>
+                <p>footer</p>
+            </template>
+        </base-layout>
+    </div>
+    <script>
+
+        Vue.component('navigation-link', {
+            data() {
+                return {
+
+                }
+            },
+            methods: {
+
+            },
+            template:`
+                <div>
+                    <p>下面是插槽加入内容</p>
+                    <slot>现在看到的是插槽后备内容</slot>
+                    <p>上面是插槽加入内容</p>
+                </div>
+            `,
+        })
+        Vue.component('base-layout', {
+            template: `
+            <div class="container">
+                <header>
+                    <slot name="header"></slot>
+                </header>
+                <main>
+                    <slot></slot>
+                </main>
+                <footer>
+                    <slot name="footer"></slot>
+                </footer>
+            </div>
+            `
+        })
+        new Vue({
+            el: '#app',
+            data: {
+                test: '222',
+            },
+        })
+
+    </script>
+</body>
+</html>
