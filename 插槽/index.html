@@ -32,6 +32,22 @@
                 {{ slotProps.user.firstName }}
             </template>
         </current-user>
+        <h2>解构插槽</h2>
+        <current-user v-slot="{ user }">
+          {{ user.firstName }}
+        </current-user> 
+        <current-user v-slot="{ user: person }">
+          {{ person.firstName }}
+        </current-user>
+        <!-- <current-user v-slot="{ user = { firstName1: 'Guest' }}">
+          {{ user.firstName1}}
+        </current-user> -->
+        <h2>动态插槽名</h2>
+        <base-layout>
+          <template :v-slot:dynamicSlotName>
+            <h1>dynamicSlotName</h1> 
+          </template>
+        </base-layout> 
     </div>
     <script>
 
@@ -70,7 +86,7 @@
         Vue.component('current-user', {
             template: `
                 <span>
-                    <solt v-bind:user="user">{{ user.lastName }}</solt>
+                    <slot v-bind:user="user">{{ user.lastName }}</slot>
                 </span>
             `,
             data() {
@@ -86,6 +102,7 @@
             el: '#app',
             data: {
                 test: '222',
+                dynamicSlotName: 'header',
             },
         })
 
