@@ -44,10 +44,13 @@
         </current-user> -->
         <h2>动态插槽名</h2>
         <base-layout>
-          <template :v-slot:dynamicSlotName>
+          <template v-slot:[dynamicSlotName] >
             <h1>dynamicSlotName</h1> 
           </template>
         </base-layout> 
+        {{ CaseWrite }}
+        <input type="text" v-model="CaseWrite">
+        <a v-bind:[hrefTest]='url'>动态参数</a>
     </div>
     <script>
 
@@ -102,7 +105,10 @@
             el: '#app',
             data: {
                 test: '222',
-                dynamicSlotName: 'header',
+                dynamicslotname: 'header',
+                CaseWrite: 'caseWrite',
+                hreftest: 'href',
+                url: 'aaaa',
             },
         })
 

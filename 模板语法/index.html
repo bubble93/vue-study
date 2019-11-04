@@ -21,7 +21,7 @@
         <p>Using mustaches: {{ rawHtml }}</p>
         <span v-html="rawHtml"></span>
         <button v-bind:disabled="isButtonDisabled">Button</button>
-        <a v-bind:href="url">动态参数失败</a>
+        <a v-bind:[url]='url'>动态参数</a>
         <a :href="url" @click="doSomething">指令缩写</a>
         <h2>计算属性</h2>
         <p>Original message: {{ message }}</p>
@@ -120,6 +120,7 @@
           template: '<p class="foo bar">组件上用class绑定</p>'
         })
         new Vue({
+          el: '#app',
           data: {
               msg : 1,
               rawHtml: '<h1>v-html</h1>',

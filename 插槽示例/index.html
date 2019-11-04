@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <todo-list>
+            <template #todo="{ todo }">
+                {{todo.text}}
+                <span v-if="todo.isComplete"> ✅</span>
+            </template>
+        </todo-list>
+    </div>
+</body>
+<script>
+    Vue.component('todo-list',{
+        template: `
+            <ul>
+                <li
+                    v-for="todo in filteredTodos"
+                    v-bind:key="todo.id"
+                >
+                    <slot name="todo" :todo="todo">
+                        {{ todo.text }}
+                    </slot>
+                </li>
+            </ul>
+        `,
+        data() {
+            return {
+                filteredTodos: [
+                    {
+                        id: '1',
+                        text: '11',
+                        isComplete: true,
+                    },
+                    {
+                        id: '2',
+                        text: '22',
+                        isComplete: false,
+                    },
+                    {
+                        id: '3',
+                        text: '33',
+                        isComplete: true,
+                    }
+                ]
+            }
+        }
+    })
+    new Vue({
+        el:'#app',
+        data:{
+
+        },
+    })
+</script>
+</html>
