@@ -9,14 +9,30 @@
 </head>
 <body>
    <div id="app">
-
+        <button @click="com = 'com1'">change1</button>
+        <button @click="com = 'com2'">change2</button>
+        <keep-alive>
+            <component :is="com"></component>
+        </keep-alive>
    </div> 
 </body>
 <script>
+    Vue.component('com1',{
+        template: `
+            <div>1<div>
+        `
+    })
+    Vue.component('com2',{
+        template: `
+            <div>2<div>
+        `
+    })
+ 
     new Vue({
         el: '#app',
         data: {
-
+            isActive: true,
+            com: 'com1',
         },
     })
 </script>
